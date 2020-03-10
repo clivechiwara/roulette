@@ -22,11 +22,7 @@ public class RouletteApplication {
         //Players list
         List<String> players = new ArrayList<>();
 
-
         List<String> betData = new ArrayList<>();
-
-
-
 
         int count = 1;
         File myObj = new File("source/data.out");
@@ -45,7 +41,6 @@ public class RouletteApplication {
             count++;
         }
         myReader.close();
-
 
         for (String player : players) {
             //Bets
@@ -71,6 +66,85 @@ public class RouletteApplication {
 
         int rand = new Random().nextInt((36 - 1) + 1) + 1;
         System.out.println("\nRandom Generated winning number is : " + rand);
+
+        List<String> result = new ArrayList<>();
+        List<List<String>> summary = new ArrayList<>();
+
+        for(String individualBetData: betData) {
+            String[] splitted = individualBetData.split(",");
+            String myBet = splitted[0].replace("[","");
+            String myAmount = splitted[1];
+            String myPlayer = splitted[2].replace("]","");
+
+            result = checker(myBet, rand, Double.valueOf(myAmount), myPlayer);
+            summary.add(result);
+        }
+        outcome = result;
+
+        //Results
+        System.out.println("Number : " + rand);
+        System.out.println("---");
+        
+        for(List<String> myResult : summary){
+            System.out.println(myResult.get(0) + "\t\t" + myResult.get(1) + "\t\t" + myResult.get(2) + "\t\t" + myResult.get(3));
+
+        }
+
+
+
+    }
+
+    public static List<String> checker(String bet, Integer randomNumber, Double amount, String player){
+
+        Double prize = 0.0;
+        List<String> data = new ArrayList<>();
+
+        //Initialisation
+        data.add(player);
+        data.add(bet);
+
+        //Random number checker
+        String valueType = "";
+        if(randomNumber%2==0){
+            valueType = "EVEN";
+        }
+        else{
+            valueType = "ODD";
+        }
+
+
+        try{
+            if(Integer.valueOf(bet).equals(randomNumber)){
+                prize = amount * 36;
+                data.add("WIN");
+                data.add(prize.toString());
+                return data;
+            }
+            else{
+                data.add("LOSE");
+                data.add(prize.toString());
+                return data;
+            }
+
+        }catch (NumberFormatException ex){
+            if(bet.equalsIgnoreCase(valueType)){
+                prize = amount * 2;
+                data.add("WIN");
+                data.add(prize.toString());
+                return data;
+            }
+            else if(bet.equalsIgnoreCase(valueType)){
+                prize = amount * 2;
+                data.add("WIN");
+                data.add(prize.toString());
+                return data;
+            }
+            else{
+                data.add("LOSE");
+                data.add(prize.toString());
+                return data;
+            }
+        }
 
     }
 
