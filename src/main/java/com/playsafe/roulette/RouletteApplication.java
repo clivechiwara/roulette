@@ -7,11 +7,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 @SpringBootApplication
 public class RouletteApplication {
 
+    //Outcomes
+    static List<String> outcome = new ArrayList<>();
 
     public static void main(String[] args) throws FileNotFoundException {
         SpringApplication.run(RouletteApplication.class, args);
@@ -21,6 +24,9 @@ public class RouletteApplication {
 
 
         List<String> betData = new ArrayList<>();
+
+
+
 
         int count = 1;
         File myObj = new File("source/data.out");
@@ -62,6 +68,9 @@ public class RouletteApplication {
                 System.out.println("You have entered an invalid input, kindly retry");
             }
         }
+
+        int rand = new Random().nextInt((36 - 1) + 1) + 1;
+        System.out.println("\nRandom Generated winning number is : " + rand);
 
     }
 
